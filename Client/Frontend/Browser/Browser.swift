@@ -22,8 +22,8 @@ protocol BrowserDelegate {
     func browser(browser: Browser, didAddSnackbar bar: SnackBar)
     func browser(browser: Browser, didRemoveSnackbar bar: SnackBar)
     func browser(browser: Browser, didSelectFindInPageForSelection selection: String)
-    optional func browser(browser: Browser, didCreateWebView webView: WKWebView)
-    optional func browser(browser: Browser, willDeleteWebView webView: WKWebView)
+    optional func browser(browser: Browser, didCreateWebView webView: BraveWebView)
+    optional func browser(browser: Browser, willDeleteWebView webView: BraveWebView)
 }
 
 class Browser: NSObject, BrowserWebViewDelegate {
@@ -41,7 +41,7 @@ class Browser: NSObject, BrowserWebViewDelegate {
         }
     }
 
-    var webView: WKWebView? = nil
+    var webView: BraveWebView? = nil
     var browserDelegate: BrowserDelegate? = nil
     var bars = [SnackBar]()
     var favicons = [Favicon]()
@@ -123,12 +123,12 @@ class Browser: NSObject, BrowserWebViewDelegate {
             configuration!.userContentController = WKUserContentController()
             configuration!.preferences = WKPreferences()
             configuration!.preferences.javaScriptCanOpenWindowsAutomatically = false
-            let webView = BrowserWebView(frame: CGRectZero, configuration: configuration!)
-            webView.delegate = self
+            let webView = BraveWebView(frame: CGRectZero)
+//            webView.delegate = self
             configuration = nil
 
             webView.accessibilityLabel = NSLocalizedString("Web content", comment: "Accessibility label for the main web content view")
-            webView.allowsBackForwardNavigationGestures = true
+//            webView.allowsBackForwardNavigationGestures = true
             webView.backgroundColor = UIColor.lightGrayColor()
 
             // Turning off masking allows the web content to flow outside of the scrollView's frame
@@ -144,7 +144,7 @@ class Browser: NSObject, BrowserWebViewDelegate {
         }
     }
 
-    func restore(webView: WKWebView) {
+    func restore(webView: BraveWebView) {
         if let sessionData = self.sessionData {
             // If the tab has session data, load the last selected URL.
             // We don't try to restore full session history due to bug 1238006.
@@ -189,16 +189,16 @@ class Browser: NSObject, BrowserWebViewDelegate {
         return webView?.estimatedProgress ?? 0
     }
 
-    var backList: [WKBackForwardListItem]? {
+    var backList: [LegacyBackForwardListItem]? {
         return webView?.backForwardList.backList
     }
 
-    var forwardList: [WKBackForwardListItem]? {
+    var forwardList: [LegacyBackForwardListItem]? {
         return webView?.backForwardList.forwardList
     }
 
     var historyList: [NSURL] {
-        func listToUrl(item: WKBackForwardListItem) -> NSURL { return item.URL }
+        func listToUrl(item: LegacyBackForwardListItem) -> NSURL { return item.URL }
         var tabs = self.backList?.map(listToUrl) ?? [NSURL]()
         tabs.append(self.url!)
         return tabs
@@ -286,14 +286,15 @@ class Browser: NSObject, BrowserWebViewDelegate {
         webView?.goForward()
     }
 
-    func goToBackForwardListItem(item: WKBackForwardListItem) {
+    func goToBackForwardListItem(item: LegacyBackForwardListItem) {
         webView?.goToBackForwardListItem(item)
     }
 
     func loadRequest(request: NSURLRequest) -> WKNavigation? {
         if let webView = webView {
             lastRequest = request
-            return webView.loadRequest(request)
+            webView.loadRequest(request); return DangerousReturnWKNavigation.emptyNav;
+
         }
         return nil
     }
@@ -425,9 +426,9 @@ class Browser: NSObject, BrowserWebViewDelegate {
 
 private class HelperManager: NSObject, WKScriptMessageHandler {
     private var helpers = [String: BrowserHelper]()
-    private weak var webView: WKWebView?
+    private weak var webView: BraveWebView?
 
-    init(webView: WKWebView) {
+    init(webView: BraveWebView) {
         self.webView = webView
     }
 
@@ -485,4 +486,9 @@ private class BrowserWebView: WKWebView, MenuHelperInterface {
 
         return super.hitTest(point, withEvent: event)
     }
+}
+
+
+struct DangerousReturnWKNavigation {
+    static let emptyNav = WKNavigation()
 }

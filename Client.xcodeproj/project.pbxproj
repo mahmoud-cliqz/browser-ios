@@ -184,6 +184,10 @@
 		1E98D97F1CF30622009FC489 /* Lookback.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 1E98D93C1CF30621009FC489 /* Lookback.bundle */; };
 		1E98D9941CF36228009FC489 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E98D9881CF341DB009FC489 /* CoreVideo.framework */; };
 		1E98D9951CF36257009FC489 /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E98D98E1CF342BE009FC489 /* VideoToolbox.framework */; };
+		1E9E385A1D18009B006BC741 /* BraveWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9E38591D18009B006BC741 /* BraveWebView.swift */; };
+		1E9E388A1D180244006BC741 /* WebViewBackForward.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9E38891D180244006BC741 /* WebViewBackForward.swift */; };
+		1E9E38911D1803AF006BC741 /* WebViewProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9E38901D1803AF006BC741 /* WebViewProgress.swift */; };
+		1E9E38931D1807B1006BC741 /* WebViewScripting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9E38921D1807B1006BC741 /* WebViewScripting.swift */; };
 		1EBF47D31D0B059700CD95F7 /* NewsNotificationPermissionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EBF47D21D0B059700CD95F7 /* NewsNotificationPermissionHelper.swift */; };
 		1EBF47D51D0B059F00CD95F7 /* NewsNotificationPermissionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EBF47D41D0B059F00CD95F7 /* NewsNotificationPermissionViewController.swift */; };
 		1EBF47EF1D0B05A800CD95F7 /* NewsPermissionAsking-4.png in Resources */ = {isa = PBXBuildFile; fileRef = 1EBF47D71D0B05A800CD95F7 /* NewsPermissionAsking-4.png */; };
@@ -1474,6 +1478,10 @@
 		1E98D9881CF341DB009FC489 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		1E98D98E1CF342BE009FC489 /* VideoToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VideoToolbox.framework; path = System/Library/Frameworks/VideoToolbox.framework; sourceTree = SDKROOT; };
 		1E98D9911CF34507009FC489 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		1E9E38591D18009B006BC741 /* BraveWebView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BraveWebView.swift; sourceTree = "<group>"; };
+		1E9E38891D180244006BC741 /* WebViewBackForward.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewBackForward.swift; sourceTree = "<group>"; };
+		1E9E38901D1803AF006BC741 /* WebViewProgress.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewProgress.swift; sourceTree = "<group>"; };
+		1E9E38921D1807B1006BC741 /* WebViewScripting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewScripting.swift; sourceTree = "<group>"; };
 		1EBF47D21D0B059700CD95F7 /* NewsNotificationPermissionHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsNotificationPermissionHelper.swift; sourceTree = "<group>"; };
 		1EBF47D41D0B059F00CD95F7 /* NewsNotificationPermissionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsNotificationPermissionViewController.swift; sourceTree = "<group>"; };
 		1EBF47D81D0B05A800CD95F7 /* de */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = de; path = "de.lproj/NewsPermissionAsking-4.png"; sourceTree = "<group>"; };
@@ -2448,6 +2456,10 @@
 		1E98D8271CF2F907009FC489 /* Browser */ = {
 			isa = PBXGroup;
 			children = (
+				1E9E38901D1803AF006BC741 /* WebViewProgress.swift */,
+				1E9E38591D18009B006BC741 /* BraveWebView.swift */,
+				1E9E38921D1807B1006BC741 /* WebViewScripting.swift */,
+				1E9E38891D180244006BC741 /* WebViewBackForward.swift */,
 				1EBF47D41D0B059F00CD95F7 /* NewsNotificationPermissionViewController.swift */,
 				1E98D8281CF2F907009FC489 /* BrowserViewControllerExtension.swift */,
 				1E98D8291CF2F907009FC489 /* CliqzAppSettingsOptions.swift */,
@@ -5622,6 +5634,7 @@
 				E4CD9F2D1A6DC91200318571 /* BrowserLocationView.swift in Sources */,
 				0BB5B2881AC0A2B90052877D /* SnackBar.swift in Sources */,
 				1E98D8501CF2F907009FC489 /* TelemetryLogger.swift in Sources */,
+				1E9E385A1D18009B006BC741 /* BraveWebView.swift in Sources */,
 				1E98D85A1CF2F907009FC489 /* BrowserViewControllerExtension.swift in Sources */,
 				1E98D9751CF30621009FC489 /* AWSXMLDictionary.m in Sources */,
 				7BEFC6801BFF68C30059C952 /* QuickActions.swift in Sources */,
@@ -5723,8 +5736,10 @@
 				0BD19A671A25309B0084FBA7 /* NSUserDefaultsPrefs.swift in Sources */,
 				E68AEDB01B18F81A00133D99 /* SwipeAnimator.swift in Sources */,
 				D31F95E91AC226CB005C9F3B /* ScreenshotHelper.swift in Sources */,
+				1E9E38911D1803AF006BC741 /* WebViewProgress.swift in Sources */,
 				28EADE5D1AFC3A78007FB2FB /* UIImageViewExtensions.swift in Sources */,
 				D3968F251A38FE8500CEFD3B /* TabManager.swift in Sources */,
+				1E9E38931D1807B1006BC741 /* WebViewScripting.swift in Sources */,
 				2816F0001B33E05400522243 /* UIConstants.swift in Sources */,
 				1E98D9501CF30621009FC489 /* AWSFMResultSet.m in Sources */,
 				7B59FC471C68E9B600F58EF5 /* SWUtilityButtonTapGestureRecognizer.m in Sources */,
@@ -5774,6 +5789,7 @@
 				E6327A641BF6438E008D12E0 /* DebugSettingsBundleOptions.swift in Sources */,
 				1E98D9721CF30621009FC489 /* AWSLogging.m in Sources */,
 				D3E8EF101B97BE69001900FB /* ClearPrivateDataTableViewController.swift in Sources */,
+				1E9E388A1D180244006BC741 /* WebViewBackForward.swift in Sources */,
 				7B59FC4A1C68E9B600F58EF5 /* SWUtilityButtonView.m in Sources */,
 				59A68FD5260B8D520F890F4A /* ReaderPanel.swift in Sources */,
 				E40FAB0C1A7ABB77009CB80D /* WebServer.swift in Sources */,

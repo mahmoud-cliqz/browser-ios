@@ -95,7 +95,7 @@ class TabPeekViewController: UIViewController, WKNavigationDelegate {
         }
         // if there is no screenshot, load the URL in a web page
         // otherwise just show the screenshot
-        setupWebView(tab?.webView)
+//        setupWebView(tab?.webView)
         guard let screenshot = tab?.screenshot else { return }
         setupWithScreenshot(screenshot)
     }

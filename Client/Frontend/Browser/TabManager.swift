@@ -401,18 +401,18 @@ class TabManager : NSObject {
     }
 
     func prefsDidChange() {
-        dispatch_async(dispatch_get_main_queue()) {
-            let allowPopups = !(self.prefs.boolForKey("blockPopups") ?? true)
-            // Each tab may have its own configuration, so we should tell each of them in turn.
-            for tab in self.tabs {
-                tab.webView?.configuration.preferences.javaScriptCanOpenWindowsAutomatically = allowPopups
-            }
-            // The default tab configurations also need to change.
-            self.configuration.preferences.javaScriptCanOpenWindowsAutomatically = allowPopups
-            if #available(iOS 9, *) {
-                self.privateConfiguration.preferences.javaScriptCanOpenWindowsAutomatically = allowPopups
-            }
-        }
+//        dispatch_async(dispatch_get_main_queue()) {
+//            let allowPopups = !(self.prefs.boolForKey("blockPopups") ?? true)
+//            // Each tab may have its own configuration, so we should tell each of them in turn.
+//            for tab in self.tabs {
+//                tab.webView?.configuration.preferences.javaScriptCanOpenWindowsAutomatically = allowPopups
+//            }
+//            // The default tab configurations also need to change.
+//            self.configuration.preferences.javaScriptCanOpenWindowsAutomatically = allowPopups
+//            if #available(iOS 9, *) {
+//                self.privateConfiguration.preferences.javaScriptCanOpenWindowsAutomatically = allowPopups
+//            }
+//        }
     }
 
     func resetProcessPool() {
@@ -459,7 +459,7 @@ extension TabManager {
             super.init()
 
             if browser.sessionData == nil {
-                let currentItem: WKBackForwardListItem! = browser.webView?.backForwardList.currentItem
+                let currentItem: LegacyBackForwardListItem! = browser.webView?.backForwardList.currentItem
 
                 // Freshly created web views won't have any history entries at all.
                 // If we have no history, abort.

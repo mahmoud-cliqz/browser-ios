@@ -949,9 +949,9 @@ class BrowserViewController: UIViewController {
             return
         }
 
-        if let webView = tab.webView {
-            resetSpoofedUserAgentIfRequired(webView, newURL: url)
-        }
+//        if let webView = tab.webView {
+//            resetSpoofedUserAgentIfRequired(webView, newURL: url)
+//        }
 
         if let nav = tab.loadRequest(PrivilegedRequest(URL: url)) {
             self.recordNavigationInTab(tab, navigation: nav, visitType: visitType)
@@ -1660,7 +1660,7 @@ extension BrowserViewController: WindowCloseHelperDelegate {
 
 extension BrowserViewController: BrowserDelegate {
 
-    func browser(browser: Browser, didCreateWebView webView: WKWebView) {
+    func browser(browser: Browser, didCreateWebView webView: BraveWebView) {
         webViewContainer.insertSubview(webView, atIndex: 0)
         webView.snp_makeConstraints { make in
             make.top.equalTo(webViewContainerToolbar.snp_bottom)
@@ -1721,7 +1721,7 @@ extension BrowserViewController: BrowserDelegate {
         addCustomUserScripts(browser)
     }
 
-    func browser(browser: Browser, willDeleteWebView webView: WKWebView) {
+    func browser(browser: Browser, willDeleteWebView webView: BraveWebView) {
         browser.cancelQueuedAlerts()
 
         webView.removeObserver(self, forKeyPath: KVOEstimatedProgress)
@@ -2245,7 +2245,7 @@ extension BrowserViewController: WKNavigationDelegate {
             // forward/backward. Strange, but LayoutChanged fixes that.
             UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, nil)
         } else {
-            screenshotHelper.takeDelayedScreenshot(tab)
+//            screenshotHelper.takeDelayedScreenshot(tab)
         }
 
         addOpenInViewIfNeccessary(webView.URL)
@@ -2258,10 +2258,10 @@ extension BrowserViewController: WKNavigationDelegate {
             finishNavigation(webView)
         }
 
-        // Remember whether or not a desktop site was requested
-        if #available(iOS 9.0, *) {
-            tab.desktopSite = webView.customUserAgent?.isEmpty == false
-        }
+//        // Remember whether or not a desktop site was requested
+//        if #available(iOS 9.0, *) {
+//            tab.desktopSite = webView.customUserAgent?.isEmpty == false
+//        }
     }
 
     private func addOpenInViewIfNeccessary(url: NSURL?) {
@@ -2306,79 +2306,79 @@ extension BrowserViewController: WKNavigationDelegate {
 private let SchemesAllowedToOpenPopups = ["http", "https", "javascript", "data"]
 
 extension BrowserViewController: WKUIDelegate {
-    func webView(webView: WKWebView, createWebViewWithConfiguration configuration: WKWebViewConfiguration, forNavigationAction navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
-        guard let currentTab = tabManager.selectedTab else { return nil }
-
-        if !navigationAction.isAllowed {
-            log.warning("Denying unprivileged request: \(navigationAction.request)")
-            return nil
-        }
-
-        screenshotHelper.takeScreenshot(currentTab)
-
-        // If the page uses window.open() or target="_blank", open the page in a new tab.
-        // TODO: This doesn't work for window.open() without user action (bug 1124942).
-        let newTab: Browser
-        if #available(iOS 9, *) {
-            newTab = tabManager.addTab(navigationAction.request, configuration: configuration, isPrivate: currentTab.isPrivate)
-        } else {
-            newTab = tabManager.addTab(navigationAction.request, configuration: configuration)
-        }
-
-        // Cliqz: preserve search state before switching to the newly created tab
-        preserveSearchState()
-        
-        tabManager.selectTab(newTab)
-        
-        // If the page we just opened has a bad scheme, we return nil here so that JavaScript does not
-        // get a reference to it which it can return from window.open() - this will end up as a
-        // CFErrorHTTPBadURL being presented.
-        guard let scheme = navigationAction.request.URL?.scheme.lowercaseString where SchemesAllowedToOpenPopups.contains(scheme) else {
-            return nil
-        }
-        
-        return newTab.webView
-    }
-
-    private func canDisplayJSAlertForWebView(webView: WKWebView) -> Bool {
-        // Only display a JS Alert if we are selected and there isn't anything being shown
-        return (tabManager.selectedTab?.webView == webView ?? false) && (self.presentedViewController == nil)
-    }
-
-    func webView(webView: WKWebView, runJavaScriptAlertPanelWithMessage message: String, initiatedByFrame frame: WKFrameInfo, completionHandler: () -> Void) {
-        var messageAlert = MessageAlert(message: message, frame: frame, completionHandler: completionHandler)
-        if canDisplayJSAlertForWebView(webView) {
-            presentViewController(messageAlert.alertController(), animated: true, completion: nil)
-        } else if let promptingTab = tabManager[webView] {
-            promptingTab.queueJavascriptAlertPrompt(messageAlert)
-        } else {
-            // This should never happen since an alert needs to come from a web view but just in case call the handler
-            // since not calling it will result in a runtime exception.
-            completionHandler()
-        }
-    }
-
-    func webView(webView: WKWebView, runJavaScriptConfirmPanelWithMessage message: String, initiatedByFrame frame: WKFrameInfo, completionHandler: (Bool) -> Void) {
-        var confirmAlert = ConfirmPanelAlert(message: message, frame: frame, completionHandler: completionHandler)
-        if canDisplayJSAlertForWebView(webView) {
-            presentViewController(confirmAlert.alertController(), animated: true, completion: nil)
-        } else if let promptingTab = tabManager[webView] {
-            promptingTab.queueJavascriptAlertPrompt(confirmAlert)
-        } else {
-            completionHandler(false)
-        }
-    }
-
-    func webView(webView: WKWebView, runJavaScriptTextInputPanelWithPrompt prompt: String, defaultText: String?, initiatedByFrame frame: WKFrameInfo, completionHandler: (String?) -> Void) {
-        var textInputAlert = TextInputAlert(message: prompt, frame: frame, completionHandler: completionHandler, defaultText: defaultText)
-        if canDisplayJSAlertForWebView(webView) {
-            presentViewController(textInputAlert.alertController(), animated: true, completion: nil)
-        } else if let promptingTab = tabManager[webView] {
-            promptingTab.queueJavascriptAlertPrompt(textInputAlert)
-        } else {
-            completionHandler(nil)
-        }
-    }
+//    func webView(webView: WKWebView, createWebViewWithConfiguration configuration: WKWebViewConfiguration, forNavigationAction navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
+//        guard let currentTab = tabManager.selectedTab else { return nil }
+//
+//        if !navigationAction.isAllowed {
+//            log.warning("Denying unprivileged request: \(navigationAction.request)")
+//            return nil
+//        }
+//
+//        screenshotHelper.takeScreenshot(currentTab)
+//
+//        // If the page uses window.open() or target="_blank", open the page in a new tab.
+//        // TODO: This doesn't work for window.open() without user action (bug 1124942).
+//        let newTab: Browser
+//        if #available(iOS 9, *) {
+//            newTab = tabManager.addTab(navigationAction.request, configuration: configuration, isPrivate: currentTab.isPrivate)
+//        } else {
+//            newTab = tabManager.addTab(navigationAction.request, configuration: configuration)
+//        }
+//
+//        // Cliqz: preserve search state before switching to the newly created tab
+//        preserveSearchState()
+//        
+//        tabManager.selectTab(newTab)
+//        
+//        // If the page we just opened has a bad scheme, we return nil here so that JavaScript does not
+//        // get a reference to it which it can return from window.open() - this will end up as a
+//        // CFErrorHTTPBadURL being presented.
+//        guard let scheme = navigationAction.request.URL?.scheme.lowercaseString where SchemesAllowedToOpenPopups.contains(scheme) else {
+//            return nil
+//        }
+//        
+//        return newTab.webView
+//    }
+//
+//    private func canDisplayJSAlertForWebView(webView: WKWebView) -> Bool {
+//        // Only display a JS Alert if we are selected and there isn't anything being shown
+//        return (tabManager.selectedTab?.webView == webView ?? false) && (self.presentedViewController == nil)
+//    }
+//
+//    func webView(webView: WKWebView, runJavaScriptAlertPanelWithMessage message: String, initiatedByFrame frame: WKFrameInfo, completionHandler: () -> Void) {
+//        var messageAlert = MessageAlert(message: message, frame: frame, completionHandler: completionHandler)
+//        if canDisplayJSAlertForWebView(webView) {
+//            presentViewController(messageAlert.alertController(), animated: true, completion: nil)
+//        } else if let promptingTab = tabManager[webView] {
+//            promptingTab.queueJavascriptAlertPrompt(messageAlert)
+//        } else {
+//            // This should never happen since an alert needs to come from a web view but just in case call the handler
+//            // since not calling it will result in a runtime exception.
+//            completionHandler()
+//        }
+//    }
+//
+//    func webView(webView: WKWebView, runJavaScriptConfirmPanelWithMessage message: String, initiatedByFrame frame: WKFrameInfo, completionHandler: (Bool) -> Void) {
+//        var confirmAlert = ConfirmPanelAlert(message: message, frame: frame, completionHandler: completionHandler)
+//        if canDisplayJSAlertForWebView(webView) {
+//            presentViewController(confirmAlert.alertController(), animated: true, completion: nil)
+//        } else if let promptingTab = tabManager[webView] {
+//            promptingTab.queueJavascriptAlertPrompt(confirmAlert)
+//        } else {
+//            completionHandler(false)
+//        }
+//    }
+//
+//    func webView(webView: WKWebView, runJavaScriptTextInputPanelWithPrompt prompt: String, defaultText: String?, initiatedByFrame frame: WKFrameInfo, completionHandler: (String?) -> Void) {
+//        var textInputAlert = TextInputAlert(message: prompt, frame: frame, completionHandler: completionHandler, defaultText: defaultText)
+//        if canDisplayJSAlertForWebView(webView) {
+//            presentViewController(textInputAlert.alertController(), animated: true, completion: nil)
+//        } else if let promptingTab = tabManager[webView] {
+//            promptingTab.queueJavascriptAlertPrompt(textInputAlert)
+//        } else {
+//            completionHandler(nil)
+//        }
+//    }
 
     /// Invoked when an error occurs while starting to load data for the main frame.
     func webView(webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: NSError) {
@@ -2558,9 +2558,9 @@ extension BrowserViewController {
                         try self.readerModeCache.put(currentURL, readabilityResult)
                     } catch _ {
                     }
-                    if let nav = webView.loadRequest(PrivilegedRequest(URL: readerModeURL)) {
-                        self.ignoreNavigationInTab(tab, navigation: nav)
-                    }
+//                    if let nav = webView.loadRequest(PrivilegedRequest(URL: readerModeURL)) {
+//                        self.ignoreNavigationInTab(tab, navigation: nav)
+//                    }
                 }
             })
         }
@@ -2584,9 +2584,9 @@ extension BrowserViewController {
                     } else if forwardList.count > 0 && forwardList.first?.URL == originalURL {
                         webView.goToBackForwardListItem(forwardList.first!)
                     } else {
-                        if let nav = webView.loadRequest(NSURLRequest(URL: originalURL)) {
-                            self.ignoreNavigationInTab(tab, navigation: nav)
-                        }
+//                        if let nav = webView.loadRequest(NSURLRequest(URL: originalURL)) {
+//                            self.ignoreNavigationInTab(tab, navigation: nav)
+//                        }
                     }
                 }
             }
@@ -3219,6 +3219,7 @@ extension BrowserViewController {
     }
     
     private func finishNavigation(webView: WKWebView) {
+        return
         // calculate times
         let currentTime = NSDate.getCurrentMillis()
         let displayTime = currentTime - navigationEndTime
