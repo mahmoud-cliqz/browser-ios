@@ -260,6 +260,7 @@ class CliqzSearchViewController : UIViewController, LoaderListener, WKNavigation
 	private func loadExtension() {
 		let url = NSURL(string: NavigationExtension.indexURL)
 		self.webView!.loadRequest(NSURLRequest(URL: url!))
+        AntiTrackingModule.sharedInstance
 	}
 
 	private func stopLoadingAnimation() {

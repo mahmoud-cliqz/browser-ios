@@ -787,3 +787,15 @@ class TabManagerNavDelegate : NSObject, WKNavigationDelegate {
             decisionHandler(res)
     }
 }
+
+// Cliqz: extension for the TabManager to add cusom methods to it
+extension TabManager {
+    func getTabId(mainDocumentURL: String) -> Int? {
+        //[WORKAROUND] return the hast code of the selectedTab as tab.url is always nil !!
+        if tabs.count > _selectedIndex {
+            tabs[_selectedIndex].hash
+        }
+
+        return nil
+    }
+}

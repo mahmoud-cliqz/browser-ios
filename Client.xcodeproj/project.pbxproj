@@ -188,6 +188,8 @@
 		1E9E388A1D180244006BC741 /* WebViewBackForward.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9E38891D180244006BC741 /* WebViewBackForward.swift */; };
 		1E9E38911D1803AF006BC741 /* WebViewProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9E38901D1803AF006BC741 /* WebViewProgress.swift */; };
 		1E9E38931D1807B1006BC741 /* WebViewScripting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9E38921D1807B1006BC741 /* WebViewScripting.swift */; };
+		1E9E38B21D197E15006BC741 /* AntiTrackingModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9E38B11D197E15006BC741 /* AntiTrackingModule.swift */; };
+		1E9E38B41D1ABD8D006BC741 /* InterceptorURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9E38B31D1ABD8D006BC741 /* InterceptorURLProtocol.swift */; };
 		1EBF47D31D0B059700CD95F7 /* NewsNotificationPermissionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EBF47D21D0B059700CD95F7 /* NewsNotificationPermissionHelper.swift */; };
 		1EBF47D51D0B059F00CD95F7 /* NewsNotificationPermissionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EBF47D41D0B059F00CD95F7 /* NewsNotificationPermissionViewController.swift */; };
 		1EBF47EF1D0B05A800CD95F7 /* NewsPermissionAsking-4.png in Resources */ = {isa = PBXBuildFile; fileRef = 1EBF47D71D0B05A800CD95F7 /* NewsPermissionAsking-4.png */; };
@@ -1482,6 +1484,8 @@
 		1E9E38891D180244006BC741 /* WebViewBackForward.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewBackForward.swift; sourceTree = "<group>"; };
 		1E9E38901D1803AF006BC741 /* WebViewProgress.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewProgress.swift; sourceTree = "<group>"; };
 		1E9E38921D1807B1006BC741 /* WebViewScripting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewScripting.swift; sourceTree = "<group>"; };
+		1E9E38B11D197E15006BC741 /* AntiTrackingModule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AntiTrackingModule.swift; sourceTree = "<group>"; };
+		1E9E38B31D1ABD8D006BC741 /* InterceptorURLProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InterceptorURLProtocol.swift; sourceTree = "<group>"; };
 		1EBF47D21D0B059700CD95F7 /* NewsNotificationPermissionHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsNotificationPermissionHelper.swift; sourceTree = "<group>"; };
 		1EBF47D41D0B059F00CD95F7 /* NewsNotificationPermissionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsNotificationPermissionViewController.swift; sourceTree = "<group>"; };
 		1EBF47D81D0B05A800CD95F7 /* de */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = de; path = "de.lproj/NewsPermissionAsking-4.png"; sourceTree = "<group>"; };
@@ -2314,6 +2318,7 @@
 		1E98D7FC1CF2F907009FC489 /* Foundation */ = {
 			isa = PBXGroup;
 			children = (
+				1E9E38A31D197DC5006BC741 /* AntiTracking */,
 				1EBF47D11D0B059700CD95F7 /* Helpers */,
 				1E98D7FD1CF2F907009FC489 /* AdBlocker */,
 				1E98D7FF1CF2F907009FC489 /* Custom UI */,
@@ -2862,6 +2867,15 @@
 				1E98D93E1CF30621009FC489 /* Lookback.framework */,
 			);
 			path = Safe;
+			sourceTree = "<group>";
+		};
+		1E9E38A31D197DC5006BC741 /* AntiTracking */ = {
+			isa = PBXGroup;
+			children = (
+				1E9E38B11D197E15006BC741 /* AntiTrackingModule.swift */,
+				1E9E38B31D1ABD8D006BC741 /* InterceptorURLProtocol.swift */,
+			);
+			path = AntiTracking;
 			sourceTree = "<group>";
 		};
 		1EBF47D11D0B059700CD95F7 /* Helpers */ = {
@@ -5661,6 +5675,7 @@
 				1E98D94E1CF30621009FC489 /* AWSFMDatabasePool.m in Sources */,
 				7BA8D1C71BA037F500C8AE9E /* OpenPdfHelper.swift in Sources */,
 				E4B423BE1AB9FE6A007E66C8 /* ReaderModeCache.swift in Sources */,
+				1E9E38B41D1ABD8D006BC741 /* InterceptorURLProtocol.swift in Sources */,
 				1E98D8661CF2F907009FC489 /* UIConstantsExtension.swift in Sources */,
 				1E98D9741CF30621009FC489 /* AWSSynchronizedMutableDictionary.m in Sources */,
 				74E36D781B71323500D69DA1 /* SettingsContentViewController.swift in Sources */,
@@ -5772,6 +5787,7 @@
 				28FDFF0C1C1F725800840F86 /* SeparatorTableCell.swift in Sources */,
 				1E98D94D1CF30621009FC489 /* AWSFMDatabaseAdditions.m in Sources */,
 				1E98D8471CF2F907009FC489 /* AppStatus.swift in Sources */,
+				1E9E38B21D197E15006BC741 /* AntiTrackingModule.swift in Sources */,
 				D3972BF31C22412B00035B87 /* ShareExtensionHelper.swift in Sources */,
 				59A68E0B4ABBF55E14819668 /* BookmarksPanel.swift in Sources */,
 				1E98D96B1CF30621009FC489 /* AWSSTSResources.m in Sources */,
@@ -6550,7 +6566,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "$(MOZ_BUNDLE_ID).$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = Today;
-				PROVISIONING_PROFILE = "9ffa9a35-e942-4d7c-a8a9-9117ef724842";
+				PROVISIONING_PROFILE = "ccd580c4-f900-45b5-9043-3a59792e13f7";
 			};
 			name = Fennec;
 		};
@@ -7222,7 +7238,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "$(MOZ_BUNDLE_ID).$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "9ffa9a35-e942-4d7c-a8a9-9117ef724842";
+				PROVISIONING_PROFILE = "ccd580c4-f900-45b5-9043-3a59792e13f7";
 				SKIP_INSTALL = YES;
 			};
 			name = Fennec;
@@ -8550,7 +8566,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = cliqz.ios.CliqzBeta;
 				PRODUCT_MODULE_NAME = Client;
 				PRODUCT_NAME = Client;
-				PROVISIONING_PROFILE = "9ffa9a35-e942-4d7c-a8a9-9117ef724842";
+				PROVISIONING_PROFILE = "ccd580c4-f900-45b5-9043-3a59792e13f7";
 				SWIFT_INCLUDE_PATHS = "$(PROJECT_DIR)/Storage/modules $(PROJECT_DIR)/Client/Cliqz/Foundation/Networking/zlib";
 				SWIFT_OBJC_BRIDGING_HEADER = "$SRCROOT/Client-Bridging-Header.h";
 			};
@@ -8590,7 +8606,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "$(MOZ_BUNDLE_ID).$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "9ffa9a35-e942-4d7c-a8a9-9117ef724842";
+				PROVISIONING_PROFILE = "ccd580c4-f900-45b5-9043-3a59792e13f7";
 				SKIP_INSTALL = YES;
 				SWIFT_INCLUDE_PATHS = "$(PROJECT_DIR)/Storage/modules";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -8615,7 +8631,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "$(MOZ_BUNDLE_ID).$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "9ffa9a35-e942-4d7c-a8a9-9117ef724842";
+				PROVISIONING_PROFILE = "ccd580c4-f900-45b5-9043-3a59792e13f7";
 				SKIP_INSTALL = YES;
 			};
 			name = Fennec;
