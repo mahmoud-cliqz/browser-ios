@@ -3259,6 +3259,7 @@ extension BrowserViewController {
     
     private func hideWebViewOverlay() {
         if webViewOverlay != nil {
+            AntiTrackingPerformanceTest.sharedInstance.urlFinishedLoading()
             webViewOverlay!.removeFromSuperview()
             webViewOverlay = nil
         }

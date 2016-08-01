@@ -205,6 +205,8 @@
 		1EBF47FE1D0B05F000CD95F7 /* BrowserDBExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EBF47FA1D0B05F000CD95F7 /* BrowserDBExtension.swift */; };
 		1EBF47FF1D0B05F000CD95F7 /* SQLiteBookmarksExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EBF47FB1D0B05F000CD95F7 /* SQLiteBookmarksExtension.swift */; };
 		1EBF48001D0B05F000CD95F7 /* SQLiteBookmarksModelExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EBF47FC1D0B05F000CD95F7 /* SQLiteBookmarksModelExtension.swift */; };
+		1EC6CE3C1D48EAFD00034ACC /* AntiTrackingPerformanceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EC6CE3B1D48EAFD00034ACC /* AntiTrackingPerformanceTest.swift */; };
+		1EC6CE4B1D48EC4600034ACC /* topUrls.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1EC6CE4A1D48EC4600034ACC /* topUrls.plist */; };
 		2805F5A61B8BCA7A00268FD1 /* ReadingList.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4D567181ADECE2700F1EFE7 /* ReadingList.framework */; };
 		28078A471B1507EF0053B46A /* ReadingList.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4D567181ADECE2700F1EFE7 /* ReadingList.framework */; };
 		280CB1371C20E0A3005AF147 /* BookmarksSynchronizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 280CB1361C20E0A3005AF147 /* BookmarksSynchronizer.swift */; };
@@ -1509,6 +1511,8 @@
 		1EBF47FA1D0B05F000CD95F7 /* BrowserDBExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BrowserDBExtension.swift; sourceTree = "<group>"; };
 		1EBF47FB1D0B05F000CD95F7 /* SQLiteBookmarksExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLiteBookmarksExtension.swift; sourceTree = "<group>"; };
 		1EBF47FC1D0B05F000CD95F7 /* SQLiteBookmarksModelExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLiteBookmarksModelExtension.swift; sourceTree = "<group>"; };
+		1EC6CE3B1D48EAFD00034ACC /* AntiTrackingPerformanceTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AntiTrackingPerformanceTest.swift; sourceTree = "<group>"; };
+		1EC6CE4A1D48EC4600034ACC /* topUrls.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = topUrls.plist; sourceTree = "<group>"; };
 		280CB1361C20E0A3005AF147 /* BookmarksSynchronizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BookmarksSynchronizer.swift; path = Sync/Synchronizers/Bookmarks/BookmarksSynchronizer.swift; sourceTree = SOURCE_ROOT; };
 		28126F471C2F948E006466CC /* SQLiteBookmarksHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLiteBookmarksHelpers.swift; sourceTree = "<group>"; };
 		28126F6D1C2F94F9006466CC /* SQLiteBookmarksModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLiteBookmarksModel.swift; sourceTree = "<group>"; };
@@ -2874,6 +2878,8 @@
 			children = (
 				1E9E38B11D197E15006BC741 /* AntiTrackingModule.swift */,
 				1E9E38B31D1ABD8D006BC741 /* InterceptorURLProtocol.swift */,
+				1EC6CE3B1D48EAFD00034ACC /* AntiTrackingPerformanceTest.swift */,
+				1EC6CE4A1D48EC4600034ACC /* topUrls.plist */,
 			);
 			path = AntiTracking;
 			sourceTree = "<group>";
@@ -5062,6 +5068,7 @@
 				E4ECCD8D1AB091470005E717 /* Reader.xcassets in Resources */,
 				E4B7B77D1A793CF20022C5E0 /* FiraSans-Regular.ttf in Resources */,
 				39409A841C90EF2000DAE683 /* Today.entitlements in Resources */,
+				1EC6CE4B1D48EC4600034ACC /* topUrls.plist in Resources */,
 				0BDA568B1B26B1BE008C9B96 /* LoginsHelper.js in Resources */,
 				E4B7B7791A793CF20022C5E0 /* FiraSans-Light.ttf in Resources */,
 				D38A1BF01A9FA2CA00F6A386 /* SiteTableViewControllerHeader.xib in Resources */,
@@ -5729,6 +5736,7 @@
 				0B5142CC1AE1BAF50014D0B3 /* UIViewExtensions.swift in Sources */,
 				1E98D8401CF2F907009FC489 /* AdBlocker.swift in Sources */,
 				E47616C71AB74CA600E7DD25 /* ReaderModeBarView.swift in Sources */,
+				1EC6CE3C1D48EAFD00034ACC /* AntiTrackingPerformanceTest.swift in Sources */,
 				1E98D84F1CF2F907009FC489 /* SearchBarTelemetryHelper.swift in Sources */,
 				2F44FCC51A9E85E900FD20CC /* SettingsTableViewController.swift in Sources */,
 				1E98D9521CF30621009FC489 /* AWSMTLJSONAdapter.m in Sources */,

@@ -23,6 +23,10 @@ class AntiTrackingModule: NSObject {
     var timerCounter = 0
     var timers = [Int: NSTimer]()
     
+    
+    var numberOfPassedRequests = 0
+    var numberOfModifiedRequests = 0
+    
     //MARK: - Singltone
     static let sharedInstance = AntiTrackingModule()
     
@@ -42,11 +46,23 @@ class AntiTrackingModule: NSObject {
             
             let onBeforeRequestCall = "System.get('platform/webrequest').default.onBeforeRequest._trigger(\(requestInfoJsonString));"
             
-            let blockResponse = context.evaluateScript(onBeforeRequestCall)
-            return blockResponse.toDictionary()
+            let blockResponse = context.evaluateScript(onBeforeRequestCall).toDictionary()
+            
+            // Collect statistics
+            if blockResponse.isEmpty {
+                numberOfPassedRequests += 1
+            } else {
+                numberOfModifiedRequests += 1
+            }
+            return blockResponse
         }
         
         return nil
+    }
+    
+    func resetStatistics() {
+        numberOfPassedRequests = 0
+        numberOfModifiedRequests = 0
     }
     //MARK: - Private Helpers
     private func toJSONString(anyObject: AnyObject) -> String? {
