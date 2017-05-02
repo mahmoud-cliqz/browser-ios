@@ -12,6 +12,7 @@ protocol QuerySuggestionDelegate : class {
 }
 
 class QuerySuggestionView: UIView {
+    
     //MARK:- Constants
     private let kViewHeight: CGFloat = 44
     private let scrollView = UIScrollView()
@@ -23,12 +24,13 @@ class QuerySuggestionView: UIView {
     
     //MARK:- instance variables
     weak var delegate : QuerySuggestionDelegate? = nil
-    private var currentText = ""
+    private var currentQuery: String = ""
+    private var currentSuggestions: [String] = []
     
     
     init() {
-        let applicationFrame = UIScreen.mainScreen().applicationFrame
-        let frame = CGRectMake(0.0, 0.0, CGRectGetWidth(applicationFrame), kViewHeight);
+        let screenBounds = UIScreen.mainScreen().bounds
+        let frame = CGRectMake(0.0, 0.0, CGRectGetWidth(screenBounds), kViewHeight);
         
         super.init(frame: frame)
         self.autoresizingMask = .FlexibleWidth
@@ -42,53 +44,42 @@ class QuerySuggestionView: UIView {
         if !QuerySuggestions.isEnabled() {
             self.hidden = true
         }
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector:#selector(showSuggestions(_:)) , name: QuerySuggestions.ShowSuggestionsNotification, object: nil)
     }
-    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func didEnterText(text: String) {
-        currentText = text
-        
-        guard QuerySuggestions.isEnabled() && OrientationUtil.isPortrait() else {
-            self.hidden = true
-            return
-        }
-        
-        guard !text.isEmpty else {
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
+    
+    func showSuggestions(notification: NSNotification) {
+        if let suggestionsData = notification.object as? [String: AnyObject],
+                query = suggestionsData["query"] as? String,
+                suggestions = suggestionsData["suggestions"] as? [String] {
             clearSuggestions()
-            return
+            showSuggestions(query, suggestions: suggestions)
         }
-
-        QuerySuggestions.getSuggestions(text) { [weak self] responseData in
-            self?.processSuggestionsResponse(text, responseData: responseData)
-        }
-        
     }
     
-    //MARK:- Helper methods
-    
-    private func processSuggestionsResponse(query: String, responseData: AnyObject) {
-        let suggestionsResponse = responseData as! [String: AnyObject]
-        let suggestions = suggestionsResponse["suggestions"] as! [String]
-        dispatch_async(dispatch_get_main_queue(), {[weak self] in
-            if query == self?.currentText {
-                self?.clearSuggestions()
-                self?.showSuggestions(suggestions)
-            }
-        })
-    }
-    
-    
-    private func clearSuggestions() {
+    func clearSuggestions() {
         let subViews = scrollView.subviews
         for subView in subViews {
             subView.removeFromSuperview()
         }
     }
+    /*
+     self?.clearSuggestions()
+     self?.showSuggestions(query, suggestions: suggestions)
+     */
+    //MARK:- Helper methods
     
-    private func showSuggestions(suggestions: [String]) {
+    
+    private func showSuggestions(query: String, suggestions: [String]) {
+        currentQuery = query
+        currentSuggestions = suggestions
         
         var index = 0
         var x: CGFloat = margin
@@ -98,7 +89,7 @@ class QuerySuggestionView: UIView {
         
         // Calcuate extra space after the last suggesion
         for suggestion in suggestions {
-            if suggestion.trim() == self.currentText.trim() {
+            if suggestion.trim() == query.trim() {
                 continue
             }
             let suggestionWidth = getWidth(suggestion)
@@ -164,7 +155,7 @@ class QuerySuggestionView: UIView {
     
     private func getTitle(suggestion: String) -> NSAttributedString {
         
-        let prefix = currentText
+        let prefix = currentQuery
         var title: NSMutableAttributedString!
         
         if let range = suggestion.rangeOfString(prefix) where range.startIndex == suggestion.startIndex {
@@ -196,12 +187,12 @@ class QuerySuggestionView: UIView {
             return
         }
         
+        clearSuggestions()
         if OrientationUtil.isPortrait() {
             self.hidden = false
-            self.didEnterText(currentText)
+            self.showSuggestions(currentQuery, suggestions: currentSuggestions)
         } else {
             self.hidden = true
-            clearSuggestions()
         }
         
     }

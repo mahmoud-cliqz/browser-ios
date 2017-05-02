@@ -872,9 +872,8 @@ extension URLBarView: AutocompleteTextFieldDelegate {
 
     func autocompleteTextField(autocompleteTextField: AutocompleteTextField, didEnterText text: String) {
         delegate?.urlBar(self, didEnterText: text)
-        
-        if let view = autocompleteTextField.inputAccessoryView as? QuerySuggestionView {
-            view.didEnterText(text)
+        if let view = autocompleteTextField.inputAccessoryView as? QuerySuggestionView where text.isEmpty {
+            view.clearSuggestions()
         }
     }
 
@@ -886,7 +885,7 @@ extension URLBarView: AutocompleteTextFieldDelegate {
 		delegate?.urlBarDidClearSearchField(self, oldText: autocompleteTextField.text)
         
         if let view = autocompleteTextField.inputAccessoryView as? QuerySuggestionView {
-            view.didEnterText("")
+            view.clearSuggestions()
         }
         return true
     }

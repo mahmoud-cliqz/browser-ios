@@ -210,6 +210,10 @@ class JavaScriptBridge {
         case "shareLocation":
             LocationManager.sharedInstance.shareLocation()
             
+        case "showQuerySuggestions":
+            if let suggestionsData = data as? [String: AnyObject] {
+                NSNotificationCenter.defaultCenter().postNotificationName(QuerySuggestions.ShowSuggestionsNotification, object: suggestionsData)
+            }
         default:
 			debugPrint("Unhandles JS action")
         }
