@@ -362,3 +362,9 @@ extension BrowserViewController: ControlCenterViewDelegate {
     }
 }
 
+extension BrowserViewController: RemoteNotificationDelegate {
+    func presentViewController(_ viewControllerToPresent: UIViewController, animated flag: Bool) {
+        self.present(viewControllerToPresent, animated: flag, completion: nil)
+    }
+}
+
