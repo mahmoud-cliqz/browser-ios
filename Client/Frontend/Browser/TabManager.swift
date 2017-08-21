@@ -657,18 +657,16 @@ extension TabManager {
         for (tabIndex, tab) in tabs.enumerated() {
             if let savedTab = SavedTab(tab: tab, isSelected: tabIndex == selectedIndex) {
                 savedTabs.append(savedTab)
-                // Cliqz: commented any code related to tab screenshot for performance as we don't use it
-//                if let screenshot = tab.screenshot,
-//                   let screenshotUUID = tab.screenshotUUID
-//                {
-//                    savedUUIDs.insert(screenshotUUID.UUIDString)
-//                    imageStore?.put(screenshotUUID.UUIDString, image: screenshot)
-//                }
+                if let screenshot = tab.screenshot,
+                   let screenshotUUID = tab.screenshotUUID
+                {
+                    savedUUIDs.insert(screenshotUUID.uuidString)
+                    imageStore?.put(screenshotUUID.uuidString, image: screenshot)
+                }
             }
         }
-        // Cliqz: commented any code related to tab screenshot for performance as we don't use it
-//        // Clean up any screenshots that are no longer associated with a tab.
-//        imageStore?.clearExcluding(savedUUIDs)
+        // Clean up any screenshots that are no longer associated with a tab.
+        imageStore?.clearExcluding(savedUUIDs)
 
         let tabStateData = NSMutableData()
         let archiver = NSKeyedArchiver(forWritingWith: tabStateData)

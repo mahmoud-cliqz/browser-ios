@@ -23,24 +23,23 @@ enum SwipeType {
 
 class TabViewCell: UICollectionViewCell {
     
-    let velocityTreshold = CGFloat(100.0)//to be adjusted on real device
-    let displayView: UIView
-    let gradientView: UIView
     weak var delegate: TabViewCellDelegate?
-    private var logoImageView: UIImageView
-    private var fakeLogoView: UIView?
+    
     var domainLabel: UILabel
     var descriptionLabel: UILabel
-    private var bigLogoImageView: UIImageView
-    private var smallCenterImageView: UIImageView
-    private var fakeSmallCenterView: UIView?
-    private var cliqzLogoImageView: UIImageView
     
-    var deleteButton: UIButton
+    private var logoImageView: UIImageView
+    private var bigLogoImageView: UIImageView
+    private var deleteButton: UIButton
+    
+    private let gradientView: UIView
+    fileprivate let displayView: UIView
+    
+    let velocityTreshold = CGFloat(100.0)//to be adjusted on real device
+    private var currentTransform: CATransform3D?
     var isPrivateTabCell: Bool = false
     var clickedElement: String?
     
-    private var currentTransform: CATransform3D?
     
     func showShadow(_ visible: Bool) {
         if visible{
@@ -65,51 +64,15 @@ class TabViewCell: UICollectionViewCell {
         self.descriptionLabel.textColor = UIConstants.NormalModeTextColor
     }
     
-    func isSmallUpperLogoNil() -> Bool {
-        return self.logoImageView.image == nil
-    }
-    
     func setSmallUpperLogo(_ image: UIImage?) {
         guard let image = image else { return }
         self.logoImageView.image = image
     }
     
-    func setBigLogo(image:UIImage?, cliqzLogo: Bool) {
+    func setBigLogo(image:UIImage?) {
         guard let image = image else { return }
-        
-        if cliqzLogo {
-            self.bigLogoImageView.backgroundColor = UIConstants.CliqzThemeColor
-            self.cliqzLogoImageView.image = image
-            return
-        }
-        
-        self.smallCenterImageView.image = image
-        let bg_color = image.getPixelColor(pos: CGPoint(x: 10,y: 10))
-        self.bigLogoImageView.backgroundColor = bg_color
+        self.bigLogoImageView.image = image
     }
-    
-    func setSmallUpperLogoView(_ view: UIView?) {
-        guard let view = view else { return }
-        self.fakeLogoView = view
-        self.displayView.addSubview(view)
-        self.displayView.bringSubview(toFront: view)
-        view.snp.makeConstraints { (make) in
-            make.top.left.right.bottom.equalTo(self.logoImageView)
-        }
-    }
-    
-    func setBigLogoView(_ view: UIView?) {
-        guard let view = view else { return }
-        self.fakeSmallCenterView = view
-        self.displayView.addSubview(view)
-        self.displayView.bringSubview(toFront: view)
-        view.snp.remakeConstraints { (make) in
-            make.top.left.right.bottom.equalTo(self.smallCenterImageView)
-        }
-        let bg_color = view.backgroundColor
-        self.bigLogoImageView.backgroundColor = bg_color
-    }
-    
     
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -162,21 +125,6 @@ class TabViewCell: UICollectionViewCell {
         displayView.addSubview(big_logo_imageView)
         bigLogoImageView = big_logo_imageView
         
-        
-        //smaller image view in the center - this displays the actual logo
-        let smaller_imageView = UIImageView()
-        smaller_imageView.backgroundColor = UIColor.clear
-        bigLogoImageView.addSubview(smaller_imageView)
-        smallCenterImageView = smaller_imageView
-        
-        //new tab cliqz logo image view
-        
-        let cliqz_imgView = UIImageView()
-        cliqz_imgView.backgroundColor = UIColor.clear
-        cliqz_imgView.contentMode = .scaleAspectFit
-        bigLogoImageView.addSubview(cliqz_imgView)
-        cliqzLogoImageView = cliqz_imgView
-
         super.init(frame: frame)
         
         self.displayView.accessibilityLabel = "New Tab, Most visited sites and News"
@@ -235,14 +183,6 @@ class TabViewCell: UICollectionViewCell {
         self.logoImageView.image = nil
         self.bigLogoImageView.image = nil
         self.bigLogoImageView.backgroundColor = UIColor(colorString:"E5E4E5")
-        self.smallCenterImageView.image = nil
-        self.cliqzLogoImageView.image = nil
-        
-        self.fakeLogoView?.removeFromSuperview()
-        self.fakeSmallCenterView?.removeFromSuperview()
-        self.fakeLogoView = nil
-        self.fakeSmallCenterView = nil
-        
     }
     
     override func layoutSubviews() {
@@ -319,15 +259,6 @@ class TabViewCell: UICollectionViewCell {
                 make.left.right.bottom.equalTo(self.displayView).inset(10)
             }
             
-			self.smallCenterImageView.snp.remakeConstraints { (make) in
-                make.center.equalTo(self.bigLogoImageView)
-                make.height.width.equalTo(80.0)//80
-            }
-            
-            self.cliqzLogoImageView.snp.remakeConstraints({ (make) in
-                make.center.equalTo(self.bigLogoImageView)
-                make.left.right.equalTo(self.bigLogoImageView).inset(50)
-            })
         }
         
         else {
@@ -376,20 +307,9 @@ class TabViewCell: UICollectionViewCell {
                 make.bottom.equalTo(self.displayView).inset(6)
             }
             
-			self.smallCenterImageView.snp.remakeConstraints { (make) in
-                make.center.equalTo(self.bigLogoImageView)
-                make.height.width.equalTo(44.0)//80
-            }
-            self.cliqzLogoImageView.snp.remakeConstraints({ (make) in
-                make.center.equalTo(self.bigLogoImageView)
-                make.left.right.equalTo(self.bigLogoImageView).inset(50)
-            })
         }
         
-        
     }
-    
- 
     
     @objc
     func didPressDelete(sender: UIButton) {

@@ -18,8 +18,6 @@ class ScreenshotHelper {
 
     
     func takeScreenshot(_ tab: Tab) {
-        // Cliqz: disabled taking screenshots as it is not used in our tab manager
-        /*
         var screenshot: UIImage?
 
         if let url = tab.url {
@@ -28,42 +26,34 @@ class ScreenshotHelper {
                     screenshot = homePanel.view.screenshot(quality: UIConstants.ActiveScreenshotQuality)
                 }
             } else {
-                let offset = CGPointMake(0, -(tab.webView?.scrollView.contentInset.top ?? 0))
+                let offset = CGPoint(x: 0, y: -(tab.webView?.scrollView.contentInset.top ?? 0))
                 screenshot = tab.webView?.screenshot(offset: offset, quality: UIConstants.ActiveScreenshotQuality)
             }
         }
 
         tab.setScreenshot(screenshot)
-         */
     }
 
     /// Takes a screenshot after a small delay.
     /// Trying to take a screenshot immediately after didFinishNavigation results in a screenshot
     /// of the previous page, presumably due to an iOS bug. Adding a brief delay fixes this.
     func takeDelayedScreenshot(_ tab: Tab) {
-        // Cliqz: disabled taking screenshots as it is not used in our tab manager
-        /*
-        let time = dispatch_time(DISPATCH_TIME_NOW, Int64(100 * NSEC_PER_MSEC))
-        dispatch_after(time, dispatch_get_main_queue()) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             // If the view controller isn't visible, the screenshot will be blank.
             // Wait until the view controller is visible again to take the screenshot.
             guard self.viewIsVisible else {
                 tab.pendingScreenshot = true
                 return
             }
-
+            
             self.takeScreenshot(tab)
         }
-        */
     }
 
     func takePendingScreenshots(_ tabs: [Tab]) {
-        // Cliqz: disabled taking screenshots as it is not used in our tab manager
-        /*
         for tab in tabs where tab.pendingScreenshot {
             tab.pendingScreenshot = false
             takeDelayedScreenshot(tab)
         }
-        */
     }
 }

@@ -300,26 +300,8 @@ extension TabsViewController: UICollectionViewDataSource {
         } else {
             cell.setSmallUpperLogo(UIImage(named: "favIconDefault"))
         }
-
-        if let url = tab.displayURL?.absoluteString {
-            
-            LogoLoader.loadLogo(url, completionBlock: { (image, logoInfo, error) in
-                guard cell.tag == indexPath.row else { return }
-                
-                if image != nil {
-                    cell.setBigLogo(image: image, cliqzLogo: false)
-                }
-                else if var info = logoInfo {
-					info.fontSize = 44
-                    let fakeLogo = LogoPlaceholder(logoInfo: info)
-                    cell.setBigLogoView(fakeLogo)
-                }
-            })
-        }
-        else{
-            cell.setBigLogo(image: UIImage(named: "cliqzTabLogo"), cliqzLogo: true)
-        }
-
+        cell.setBigLogo(image: tab.screenshot)
+        
         cell.accessibilityLabel = tab.displayURL?.absoluteString
         return cell
     }
