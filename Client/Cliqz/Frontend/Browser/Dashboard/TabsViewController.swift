@@ -408,11 +408,18 @@ extension TabsViewController: TabManagerDelegate {
     }
     
     func tabManagerDidAddTabs(_ tabManager: TabManager) {
+    
     }
     
     func tabManagerDidRestoreTabs(_ tabManager: TabManager) {
+    
     }
     
     func tabManagerDidRemoveAllTabs(_ tabManager: TabManager, toast:ButtonToast?) {
+    
+    }
+    
+    func tabManagerDidSwapTabs(_ tabManager: TabManager, oldTabIndex: Int, newTabIndex: Int) {
+        self.collectionView.reloadData()
     }
 }

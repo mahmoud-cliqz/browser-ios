@@ -52,6 +52,8 @@ class BrowserViewController: UIViewController {
 	// Cliqz: replace URLBarView with our custom URLBarView
 //    var urlBar: URLBarView!
 	var urlBar: CliqzURLBarView!
+    // Cliqz: Add ipadTabsToolbar
+    var iPadTabsToolBar: TabsToolbar?
     var readerModeBar: ReaderModeBarView?
     var readerModeCache: ReaderModeCache
     fileprivate var statusBarOverlay: UIView!
@@ -439,10 +441,19 @@ class BrowserViewController: UIViewController {
         urlBar.translatesAutoresizingMaskIntoConstraints = false
         urlBar.delegate = self
         urlBar.tabToolbarDelegate = self
-        // Cliqz: Replaced BlurWrapper because of requirements
-        header = urlBar //BlurWrapper(view: urlBar)
-        view.addSubview(header)
+        
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            header = UIView()
+            header.addSubview(urlBar)
+            iPadTabsToolBar = TabsToolbar(frame: CGRect.zero, tabManager: self.tabManager)
+            header.addSubview(iPadTabsToolBar!)
+        } else {
+            // Cliqz: Replaced BlurWrapper because of requirements
+            header = urlBar //BlurWrapper(view: urlBar)
+        }
 
+        view.addSubview(header)
+        
         // UIAccessibilityCustomAction subclass holding an AccessibleAction instance does not work, thus unable to generate AccessibleActions and UIAccessibilityCustomActions "on-demand" and need to make them "persistent" e.g. by being stored in BVC
         pasteGoAction = AccessibleAction(name: NSLocalizedString("Paste & Go", comment: "Paste the URL into the location bar and visit"), handler: { () -> Bool in
             if let pasteboardContents = UIPasteboard.general.string {
@@ -504,17 +515,31 @@ class BrowserViewController: UIViewController {
 
     fileprivate func setupConstraints() {
         urlBar.snp.makeConstraints { make in
-            make.edges.equalTo(self.header)
+            make.left.right.top.equalTo(self.header)
+            make.height.equalTo(UIConstants.ToolbarHeight)
         }
 
         header.snp.makeConstraints { make in
             scrollController.headerTopConstraint = make.top.equalTo(topLayoutGuide.snp.bottom).constraint
-            make.height.equalTo(UIConstants.ToolbarHeight)
             make.left.right.equalTo(self.view)
+            
+            if UIDevice.current.userInterfaceIdiom == .pad {
+                make.height.equalTo(2 * UIConstants.ToolbarHeight)
+            } else {
+                make.height.equalTo(UIConstants.ToolbarHeight)
+            }
+            
         }
 
         headerBackdrop.snp.makeConstraints { make in
             make.edges.equalTo(self.header)
+        }
+        
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            iPadTabsToolBar?.snp.makeConstraints({ make in
+                make.left.right.bottom.equalTo(header)
+                make.height.equalTo(UIConstants.ToolbarHeight)
+            })
         }
 
         webViewContainerBackdrop.snp.makeConstraints { make in
@@ -817,7 +842,7 @@ class BrowserViewController: UIViewController {
         // Remake constraints even if we're already showing the home controller.
         // The home controller may change sizes if we tap the URL bar while on about:home.
         homePanelController?.view.snp.remakeConstraints { make in
-            make.top.equalTo(self.urlBar.snp.bottom)
+            make.top.equalTo(self.header.snp.bottom)
             make.left.right.equalTo(self.view)
             if self.homePanelIsInline {
                 make.bottom.equalTo(self.toolbar?.snp.top ?? self.view.snp.bottom)
@@ -2655,6 +2680,11 @@ extension BrowserViewController: TabManagerDelegate {
         }
 
         updateInContentHomePanel(selected?.url as URL?)
+        
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            // Cliqz: switch to search mode if needed in case of iPad as user can switch tabs from the iPadTabstoolbar
+            switchToSearchModeIfNeeded()
+        }
     }
 
     func tabManager(_ tabManager: TabManager, didCreateTab tab: Tab) {
@@ -2705,6 +2735,9 @@ extension BrowserViewController: TabManagerDelegate {
                 undoToast.showToast()
             }
         }
+    }
+    func tabManagerDidSwapTabs(_ tabManager: TabManager, oldTabIndex: Int, newTabIndex: Int) {
+    
     }
 
     fileprivate func updateTabCountUsingTabManager(_ tabManager: TabManager, animated: Bool = true) {
@@ -2985,7 +3018,10 @@ extension BrowserViewController: WKNavigationDelegate {
                 self.tabManager.storeChanges()
             }
         }
-
+        
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            iPadTabsToolBar?.refreshSelectedTabTitle()
+        }
     }
 #if CLIQZ
     func webView(_ _webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {

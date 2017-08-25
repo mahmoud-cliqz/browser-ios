@@ -689,6 +689,10 @@ extension TabTrayController: TabManagerDelegate {
             undoToast.showToast()
         }
     }
+    
+    func tabManagerDidSwapTabs(_ tabManager: TabManager, oldTabIndex: Int, newTabIndex: Int) {
+        
+    }
 }
 
 extension TabTrayController: UIScrollViewAccessibilityDelegate {

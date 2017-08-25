@@ -19,6 +19,7 @@ protocol TabManagerDelegate: class {
     func tabManagerDidRestoreTabs(_ tabManager: TabManager)
     func tabManagerDidAddTabs(_ tabManager: TabManager)
     func tabManagerDidRemoveAllTabs(_ tabManager: TabManager, toast:ButtonToast?)
+    func tabManagerDidSwapTabs(_ tabManager: TabManager, oldTabIndex: Int, newTabIndex: Int)
 }
 
 protocol TabManagerStateDelegate: class {
@@ -483,6 +484,15 @@ class TabManager : NSObject {
         removeTabs(self.tabs)
     }
 
+    // Cliqz: add functionality to swap tabs
+    func swapTabs(oldTabIndex: Int, newTabIndex: Int) {
+        swap(&tabs[oldTabIndex], &tabs[newTabIndex])
+        
+        // Notify that we bulk-loaded so we can adjust counts.
+        for delegate in delegates {
+            delegate.get()?.tabManagerDidSwapTabs(self, oldTabIndex: oldTabIndex, newTabIndex: newTabIndex)
+        }
+    }
     func getIndex(_ tab: Tab) -> Int? {
         assert(Thread.isMainThread)
 

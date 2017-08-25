@@ -72,7 +72,7 @@ class Tab: NSObject {
     private var lastRequest: URLRequest? = nil
     var restoring: Bool = false
     var pendingScreenshot = false
-    var url: URL?
+    dynamic var url: URL?
     // Cliqz: save restoring url for the tab
     var restoringUrl: URL?
     var requestInProgress = false
