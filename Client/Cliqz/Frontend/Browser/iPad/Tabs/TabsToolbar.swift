@@ -19,6 +19,7 @@ struct TabsToolbarUX {
     static let kAddButtonWidth = CGFloat(40.0)
     static let kCornerRadius = CGFloat(6.5)
     static let kShadowRadius = CGFloat(5.0)
+    static let kCloseButtonWidth = CGFloat(25.0)
     
     static let kTabColor = UIColor.init(red: 208.0/255.0, green: 212.0/255.0, blue: 225.0/255.0, alpha: 1.0)
     static let kTabDarkerColor = UIColor.init(red: 138.0/255.0, green: 142.0/255.0, blue: 155.0/255.0, alpha: 1.0)

@@ -22,10 +22,8 @@ class TabView: UIView {
         let button = UIButton.init(type: .custom)
         button.autoresizingMask = .flexibleRightMargin
         button.contentVerticalAlignment = .center
-        button.setTitle("x", for: .normal)
-        button.setTitleColor(UIColor.gray, for: .normal)
+        button.setImage(UIImage.init(named: "closeTab"), for: .normal)
         button.showsTouchWhenHighlighted = true
-        button.titleLabel?.font = UIFont.init(name: "HelveticaNeue-Bold", size: 17.0)
         return button
     }()
     
@@ -96,23 +94,14 @@ class TabView: UIView {
             if t.width > b.size.width*0.75 {
                 t.width = b.size.width*0.75 - 2*margin
             }
-            
-            if self.closeButton.isHidden {
-                self.titleLabel.frame = CGRect(x: (b.size.width - t.width)/2,
-                                               y: (b.size.height - t.height)/2,
-                                               width: t.width,
-                                               height: t.height)
-            } else {
-                
-                self.titleLabel.frame = CGRect(x: (b.size.width - t.width)/2 + margin,
-                                               y: (b.size.height - t.height)/2,
-                                               width: t.width,
-                                               height: t.height)
-            }
+            self.titleLabel.frame = CGRect(x: (b.size.width - t.width)/2,
+                                           y: (b.size.height - t.height)/2,
+                                           width: t.width,
+                                           height: t.height)
         }
         
-        
-        self.closeButton.frame = CGRect(x: margin, y: 0, width: 25, height: b.size.height)
+        let buttunOriginX = self.bounds.width - TabsToolbarUX.kCloseButtonWidth - margin
+        self.closeButton.frame = CGRect(x: buttunOriginX, y: 0, width: TabsToolbarUX.kCloseButtonWidth, height: b.size.height)
     }
     
     override func draw(_ rect: CGRect) {
