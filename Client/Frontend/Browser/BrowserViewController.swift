@@ -538,7 +538,7 @@ class BrowserViewController: UIViewController {
         if UIDevice.current.userInterfaceIdiom == .pad {
             iPadTabsToolBar?.snp.makeConstraints({ make in
                 make.left.right.bottom.equalTo(header)
-                make.height.equalTo(UIConstants.ToolbarHeight)
+                make.height.equalTo(UIConstants.IpadToolbarHeight)
             })
         }
 

@@ -11,8 +11,9 @@ import UIKit
 class TabView: UIView {
     // MARK: - Constants`
     static let urlKeyPath = "url"
+    private let tabBackgroundColor = TabsToolbarUX.kTabBackgroundColor
     private let tabColor = TabsToolbarUX.kTabColor
-    private let tabDarkerColor = TabsToolbarUX.kTabDarkerColor
+    private let borderColor = TabsToolbarUX.kTabBorderColor
     
     // MARK: - Instance varialbes
     var selected = false
@@ -29,12 +30,11 @@ class TabView: UIView {
     
     private lazy var titleLabel: UILabel = {
         let label = UILabel.init(frame: CGRect.zero)
-        label.textAlignment = .center;
+        label.textAlignment = .left;
         label.lineBreakMode = .byTruncatingTail;
         label.autoresizingMask = .flexibleWidth;
         label.backgroundColor = UIColor.clear
-        label.font = UIFont.init(name: "HelveticaNeue-Bold", size: 14.0)
-        label.textColor = UIColor.darkGray
+        label.font = UIFont.systemFont(ofSize: 14.0)
         return label
     } ()
     
@@ -49,7 +49,7 @@ class TabView: UIView {
         tab.addObserver(self, forKeyPath: TabView.urlKeyPath, options: .new, context: nil)
         
         self.isExclusiveTouch = true
-        self.backgroundColor = UIColor.clear
+        self.backgroundColor = tabColor
         self.contentMode = .redraw;
         self.autoresizingMask = [.flexibleWidth, .flexibleLeftMargin, .flexibleRightMargin]
         self.addSubview(self.closeButton)
@@ -89,33 +89,41 @@ class TabView: UIView {
     override func layoutSubviews() {
         let b = self.bounds
         let margin = TabsToolbarUX.kCornerRadius
+        let titleMargin = TabsToolbarUX.kTabsTitleMargin
+        
+        let buttunOriginX = b.width - TabsToolbarUX.kCloseButtonWidth - margin
+        self.closeButton.frame = CGRect(x: buttunOriginX, y: 0, width: TabsToolbarUX.kCloseButtonWidth, height: b.size.height)
         
         if var t = tabSize {
-            if t.width > b.size.width*0.75 {
-                t.width = b.size.width*0.75 - 2*margin
+            // if the title is intersecting with the close button shrink it a little bit
+            if t.width > buttunOriginX {
+                t.width = buttunOriginX
             }
-            self.titleLabel.frame = CGRect(x: (b.size.width - t.width)/2,
+            
+            var titleLabelOriginX = b.width -  t.width
+            titleLabelOriginX = titleLabelOriginX < titleMargin ? titleLabelOriginX : titleMargin
+            
+            self.titleLabel.frame = CGRect(x: titleLabelOriginX,
                                            y: (b.size.height - t.height)/2,
                                            width: t.width,
                                            height: t.height)
         }
         
-        let buttunOriginX = self.bounds.width - TabsToolbarUX.kCloseButtonWidth - margin
-        self.closeButton.frame = CGRect(x: buttunOriginX, y: 0, width: TabsToolbarUX.kCloseButtonWidth, height: b.size.height)
+        
     }
     
     override func draw(_ rect: CGRect) {
-        let tabRect   = self.bounds;
-        let tabLeft   = tabRect.origin.x;
-        let tabRight  = tabRect.origin.x + tabRect.size.width;
-        let tabTop    = tabRect.origin.y;
-        let tabBottom = tabRect.origin.y + tabRect.size.height;
+        let tabRect   = self.bounds
+        let tabLeft   = tabRect.origin.x
+        let tabRight  = tabRect.origin.x + tabRect.size.width
+        let tabTop    = tabRect.origin.y
+        let tabBottom = tabRect.origin.y + tabRect.size.height
         let cornerRadius = TabsToolbarUX.kCornerRadius
         let shadowRadius = TabsToolbarUX.kShadowRadius
-        
+
         let path = CGMutablePath()
         path.move(to: CGPoint(x: tabLeft, y: tabTop))
-        
+
         // Top left
         path.addArc(center: CGPoint(x: tabLeft, y: tabTop + cornerRadius),
                     radius: cornerRadius,
@@ -123,7 +131,7 @@ class TabView: UIView {
                     endAngle: 0,
                     clockwise: false)
         path.addLine(to: CGPoint(x: tabLeft + cornerRadius, y: tabBottom - cornerRadius))
-        
+
 
         // Bottom left
         path.addArc(center: CGPoint(x: tabLeft + 2*cornerRadius, y: tabBottom - cornerRadius),
@@ -132,7 +140,7 @@ class TabView: UIView {
                     endAngle: CGFloat(Double.pi/2),
                     clockwise: true)
         path.addLine(to: CGPoint(x: tabRight - 2*cornerRadius, y: tabBottom))
-        
+
         // Bottom rigth
         path.addArc(center: CGPoint(x: tabRight - 2*cornerRadius, y: tabBottom),
                     radius: cornerRadius,
@@ -147,7 +155,7 @@ class TabView: UIView {
                     startAngle: CGFloat(Double.pi),
                     endAngle: -CGFloat(Double.pi/2),
                     clockwise: false)
-        
+
         path.addLine(to: CGPoint(x: tabRight, y: tabTop))
         path.addLine(to: CGPoint(x: tabLeft, y: tabTop))
         path.closeSubpath()
@@ -155,13 +163,19 @@ class TabView: UIView {
 
         // Fill with current tab color
         if let ctx = UIGraphicsGetCurrentContext() {
-            let startColor = self.selected ? self.tabColor.cgColor : self.tabDarkerColor.cgColor;
+            let startColor = self.selected ? self.tabColor.cgColor : self.tabBackgroundColor.cgColor
             ctx.setFillColor(startColor)
             ctx.setShadow(offset: CGSize(width: 0, height: -1), blur: shadowRadius)
             ctx.addPath(path)
             ctx.fillPath()
         }
-
+        
+        // Adding border to the view
+        self.layer.borderColor = self.selected ? self.tabColor.cgColor : self.borderColor.cgColor
+        self.layer.borderWidth = 0.5
+        
+        // Adjusting the title label color
+        self.titleLabel.textColor = self.selected ? TabsToolbarUX.kSelectedTabTitleColor : TabsToolbarUX.kUnselectedTabTitleColor
     }
     
     // MARK: - Private helper methods

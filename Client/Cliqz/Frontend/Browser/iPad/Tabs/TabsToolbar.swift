@@ -15,15 +15,18 @@ struct TabsToolbarUX {
     static let kTabsToolbarHeigth = CGFloat(10.0)
     static let kTabsToolbarHeigthFull = CGFloat(44.0)
     static let kTabsHeigth = CGFloat(35.0)
-    static let kTabsBottomMargin = CGFloat(1.0)
+    static let kTabsBottomMargin = CGFloat(0.0)
     static let kAddButtonWidth = CGFloat(40.0)
-    static let kCornerRadius = CGFloat(6.5)
-    static let kShadowRadius = CGFloat(5.0)
+    static let kCornerRadius = CGFloat(0.0)
+    static let kShadowRadius = CGFloat(2.0)
     static let kCloseButtonWidth = CGFloat(25.0)
+    static let kTabsTitleMargin = CGFloat(10.0)
     
-    static let kTabColor = UIColor.init(red: 208.0/255.0, green: 212.0/255.0, blue: 225.0/255.0, alpha: 1.0)
-    static let kTabDarkerColor = UIColor.init(red: 138.0/255.0, green: 142.0/255.0, blue: 155.0/255.0, alpha: 1.0)
-    static let kTabBackgroundColor = UIColor.init(red: 113.0/255.0, green: 118.0/255.0, blue: 120.0/255.0, alpha: 1.0)
+    static let kTabBackgroundColor = UIColor.white
+    static let kTabColor = UIColor.init(red: 0.0/255.0, green: 174.0/255.0, blue: 240.0/255.0, alpha: 1.0)
+    static let kSelectedTabTitleColor = UIColor.white
+    static let kUnselectedTabTitleColor = UIColor.init(red: 101.0/255.0, green: 103.0/255.0, blue: 109.0/255.0, alpha: 1.0)
+    static let kTabBorderColor = UIColor.lightGray
 }
 
 class TabsToolbar: UIView {
