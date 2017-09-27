@@ -226,7 +226,7 @@ open class TabToolbarHelper: NSObject {
     
     func SELdidLongPressTabs(_ recognizer: UILongPressGestureRecognizer) {
         if recognizer.state == UIGestureRecognizerState.began {
-            toolbar.tabToolbarDelegate?.tabToolbarDidLongPressTabs(toolbar, button: toolbar.backButton)
+            toolbar.tabToolbarDelegate?.tabToolbarDidLongPressTabs(toolbar, button: toolbar.tabsButton)
         }
     }
 }
