@@ -47,7 +47,7 @@ struct TabsButtonUX {
         theme.font = TitleFont
 		// Cliqz: Changed text colors and backgroundColor of TabsButton in Normal Mode according to requirements (Commented out original color)
         theme.backgroundColor = UIColor.clear //TitleBackgroundColor
-        theme.textColor = UIColor.black // TitleColor
+        theme.textColor = UIDevice.current.userInterfaceIdiom == .pad ? UIColor.white : UIColor.black
         theme.insets = TitleInsets
         theme.highlightButtonColor = TabsButtonUX.TitleColor
         theme.highlightTextColor = TabsButtonUX.TitleBackgroundColor

@@ -56,7 +56,7 @@ struct URLBarViewUX {
         theme.tintColor = ProgressTintColor
         theme.textColor = UIConstants.NormalModeTextColor //UIColor.blackColor()
         // Cliqz: Changed button tint color to black in the upper toolbar (URLBar)
-        theme.buttonTintColor = UIColor.black
+        theme.buttonTintColor = UIDevice.current.userInterfaceIdiom == .pad ? UIColor.white : UIColor.black
         // Cliqz: Set URLBar backgroundColor because of requirements
         theme.backgroundColor = UIColor.white //UIConstants.AppBackgroundColor.withAlphaComponent(1)
 
