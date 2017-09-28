@@ -87,28 +87,16 @@ class TabView: UIView {
     // MARK: - Drawing
     
     override func layoutSubviews() {
-        let b = self.bounds
-        let margin = TabsToolbarUX.kCornerRadius
-        let titleMargin = TabsToolbarUX.kTabsTitleMargin
-        
-        let buttunOriginX = b.width - TabsToolbarUX.kCloseButtonWidth - margin
-        self.closeButton.frame = CGRect(x: buttunOriginX, y: 0, width: TabsToolbarUX.kCloseButtonWidth, height: b.size.height)
-        
-        if var t = tabSize {
-            // if the title is intersecting with the close button shrink it a little bit
-            if t.width > buttunOriginX {
-                t.width = buttunOriginX
-            }
-            
-            var titleLabelOriginX = b.width -  t.width
-            titleLabelOriginX = titleLabelOriginX < titleMargin ? titleLabelOriginX : titleMargin
-            
-            self.titleLabel.frame = CGRect(x: titleLabelOriginX,
-                                           y: (b.size.height - t.height)/2,
-                                           width: t.width,
-                                           height: t.height)
+        let buttonWidth = TabsToolbarUX.kCloseButtonWidth        
+        closeButton.snp.remakeConstraints { make in
+            make.centerY.right.height.equalTo(self)
+            make.width.equalTo(buttonWidth)
         }
-        
+        titleLabel.snp.remakeConstraints { make in
+            make.height.centerY.equalTo(self)
+            make.left.equalTo(self).offset(self.bounds.width/10.0)
+            make.right.equalTo(self).offset(-buttonWidth-2)
+        }
         
     }
     
