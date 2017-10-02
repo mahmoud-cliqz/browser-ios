@@ -23,6 +23,8 @@ class SettingsPrefs {
     static let LimitMobileDataUsagePrefKey = "LimitMobileDataUsage"
     static let AutoForgetTabPrefKey = "AutoForgetTab"
     static let LogTelemetryPrefKey = "showTelemetry"
+    static let ShowTopSitesPrefKey = "showFreshTabTopSites"
+    static let ShowNewsPrefKey = "showFreshTabNews"
 
 	static let SearchBackendOptions = ["DE", "US", "FR"]
 
@@ -187,6 +189,22 @@ class SettingsPrefs {
         let defaultValue = false
         if let logTelemetryPref = SettingsPrefs.getBoolPref(LogTelemetryPrefKey) {
             return logTelemetryPref
+        }
+        return defaultValue
+    }
+    
+    class func getShowTopSitesPref() -> Bool {
+        let defaultValue = true
+        if let showTopSites = SettingsPrefs.getBoolPref(ShowTopSitesPrefKey) {
+            return showTopSites
+        }
+        return defaultValue
+    }
+    
+    class func getShowNewsPref() -> Bool {
+        let defaultValue = true
+        if let showNewsPref = SettingsPrefs.getBoolPref(ShowNewsPrefKey) {
+            return showNewsPref
         }
         return defaultValue
     }
